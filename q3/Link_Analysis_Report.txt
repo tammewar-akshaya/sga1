@@ -1,0 +1,62 @@
+Question 3 - File System and Link Analysis
+==========================================
+
+Command 1: echo 'Linux link test file' > q3/original.txt
+Output:
+Linux link test file
+Observation: The original file was created successfully.
+
+Command 2: ln q3/original.txt q3/hardlink.txt
+Output:
+1310814 -rw-rw-rw- 2 codespace codespace 21 Jul  3 17:24 q3/hardlink.txt
+1310814 -rw-rw-rw- 2 codespace codespace 21 Jul  3 17:24 q3/original.txt
+Observation: The hard link shares the same inode as the original file.
+
+Command 3: ln -s q3/original.txt q3/symlink.txt
+Output:
+1310815 lrwxrwxrwx 1 codespace codespace 15 Jul  3 17:24 q3/symlink.txt -> q3/original.txt
+Observation: The symbolic link has its own inode and points to the original file target.
+
+Command 4: stat q3/original.txt q3/hardlink.txt q3/symlink.txt
+Output:
+  File: q3/original.txt
+  Size: 21        	Blocks: 8          IO Block: 4096   regular file
+Device: 7,4	Inode: 1310814     Links: 2
+Access: (0666/-rw-rw-rw-)  Uid: ( 1000/codespace)   Gid: ( 1000/codespace)
+Access: 2026-07-03 17:24:55.427876537 +0000
+Modify: 2026-07-03 17:24:55.316876542 +0000
+Change: 2026-07-03 17:24:55.351876540 +0000
+ Birth: 2026-07-03 17:24:55.316876542 +0000
+  File: q3/hardlink.txt
+  Size: 21        	Blocks: 8          IO Block: 4096   regular file
+Device: 7,4	Inode: 1310814     Links: 2
+Access: (0666/-rw-rw-rw-)  Uid: ( 1000/codespace)   Gid: ( 1000/codespace)
+Access: 2026-07-03 17:24:55.427876537 +0000
+Modify: 2026-07-03 17:24:55.316876542 +0000
+Change: 2026-07-03 17:24:55.351876540 +0000
+ Birth: 2026-07-03 17:24:55.316876542 +0000
+  File: q3/symlink.txt -> q3/original.txt
+  Size: 15        	Blocks: 0          IO Block: 4096   symbolic link
+Device: 7,4	Inode: 1310815     Links: 1
+Access: (0777/lrwxrwxrwx)  Uid: ( 1000/codespace)   Gid: ( 1000/codespace)
+Access: 2026-07-03 17:24:55.436876537 +0000
+Modify: 2026-07-03 17:24:55.399876538 +0000
+Change: 2026-07-03 17:24:55.399876538 +0000
+ Birth: 2026-07-03 17:24:55.399876538 +0000
+Observation: The metadata shows that the hard link and original file share the same inode, while the symbolic link does not.
+
+Command 5: rm q3/original.txt
+Output:
+1310814 -rw-rw-rw- 1 codespace codespace 21 Jul  3 17:24 q3/hardlink.txt
+1310815 lrwxrwxrwx 1 codespace codespace 15 Jul  3 17:24 q3/symlink.txt -> q3/original.txt
+Observation: The hard link still works after the original file is removed, but the symbolic link breaks.
+
+Command 6: cat q3/hardlink.txt
+Output:
+Linux link test file
+Observation: The hard link still displays the original file content.
+
+Command 7: cat q3/symlink.txt
+Output:
+Broken symbolic link: target missing
+Observation: The symbolic link is broken because its target file no longer exists.

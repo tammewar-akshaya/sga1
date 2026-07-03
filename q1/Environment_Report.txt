@@ -1,0 +1,36 @@
+Question 1 - Environment Verification
+=================================
+
+Command 1: whoami
+Output:
+codespace
+Observation: The active account name is confirmed as the current Linux user.
+
+Command 2: groups
+Output:
+codespace pipx python oryx golang docker sdkman rvm php conda nvs nvm hugo ssh
+Observation: The user belongs to several groups that affect permissions and access.
+
+Command 3: echo \"$SHELL\"
+Output:
+/bin/bash
+Observation: The default shell for the session is /bin/bash.
+
+Command 4: pwd
+Output:
+/workspaces/sga1/q1
+Observation: The current working directory is /workspaces/sga1/q1.
+
+Command 5: ls -la
+Output:
+total 12
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 .
+drwxrwxrwx+ 8 codespace root      4096 Jul  3 17:01 ..
+-rw-rw-rw-  1 codespace codespace    0 Jul  3 17:24 Environment_Report.txt
+drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 17:24 screenshots
+Observation: The workspace contents are listed and the report files are present.
+
+Command 6: curl -s --max-time 10 https://youtube.com > /dev/null && echo \"Network: youtube.com reachable\"
+Output:
+Network: youtube.com reachable
+Observation: Network connectivity to the external site was successful.

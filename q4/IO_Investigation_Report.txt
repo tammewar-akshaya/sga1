@@ -1,0 +1,89 @@
+Question 4 - File Access and I/O Investigation
+=============================================
+
+Command 1: echo 'sample log line' > q4/app.log
+Output:
+sample log line
+Observation: A sample log file was created for the I/O investigation.
+
+Command 2: lsof -p $$
+Output:
+COMMAND   PID      USER   FD   TYPE DEVICE SIZE/OFF    NODE NAME
+bash    19877 codespace  cwd    DIR    7,4     4096 1310730 /workspaces/sga1
+bash    19877 codespace  rtd    DIR   0,45     4096 1101733 /
+bash    19877 codespace  txt    REG   0,45  1446024 1048808 /usr/bin/bash
+bash    19877 codespace  mem    REG   0,45   360460 1049130 /usr/lib/locale/C.utf8/LC_CTYPE
+bash    19877 codespace  mem    REG   0,45       50 1049137 /usr/lib/locale/C.utf8/LC_NUMERIC
+bash    19877 codespace  mem    REG   0,45     3360 1049140 /usr/lib/locale/C.utf8/LC_TIME
+bash    19877 codespace  mem    REG   0,45     1406 1049129 /usr/lib/locale/C.utf8/LC_COLLATE
+bash    19877 codespace  mem    REG   0,45      270 1049135 /usr/lib/locale/C.utf8/LC_MONETARY
+bash    19877 codespace  mem    REG   0,45    27028 1049435 /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
+bash    19877 codespace  mem    REG   0,45  3055776 1186951 /usr/lib/locale/locale-archive
+bash    19877 codespace  mem    REG   0,45  2125328 1049464 /usr/lib/x86_64-linux-gnu/libc.so.6
+bash    19877 codespace  mem    REG   0,45   208328 1049566 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+bash    19877 codespace  mem    REG   0,45       48 1049134 /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES
+bash    19877 codespace  mem    REG   0,45       34 1049138 /usr/lib/locale/C.utf8/LC_PAPER
+bash    19877 codespace  mem    REG   0,45       62 1049136 /usr/lib/locale/C.utf8/LC_NAME
+bash    19877 codespace  mem    REG   0,45      127 1049128 /usr/lib/locale/C.utf8/LC_ADDRESS
+bash    19877 codespace  mem    REG   0,45       47 1049139 /usr/lib/locale/C.utf8/LC_TELEPHONE
+bash    19877 codespace  mem    REG   0,45       23 1049132 /usr/lib/locale/C.utf8/LC_MEASUREMENT
+bash    19877 codespace  mem    REG   0,45      258 1049131 /usr/lib/locale/C.utf8/LC_IDENTIFICATION
+Observation: The shell has an open file descriptor for the log file after redirection.
+
+Command 3: ls -l /proc/$$/fd
+Output:
+total 0
+lrwx------ 1 codespace codespace 64 Jul  3 17:21 0 -> /dev/pts/6
+lrwx------ 1 codespace codespace 64 Jul  3 17:21 1 -> /dev/pts/6
+lrwx------ 1 codespace codespace 64 Jul  3 17:21 2 -> /dev/pts/6
+lrwx------ 1 codespace codespace 64 Jul  3 17:21 255 -> /dev/pts/6
+lr-x------ 1 codespace codespace 64 Jul  3 17:21 3 -> /workspaces/sga1/q4/app.log
+l-wx------ 1 codespace codespace 64 Jul  3 17:21 6 -> /dev/null
+Observation: The process file descriptor table shows which files the shell is currently accessing.
+
+Command 4: ls -l > q4/stdout.txt
+Output:
+total 24
+-rw-rw-rw-  1 codespace root         6 Jul  3 16:53 README.md
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q1
+drwxrwxrwx+ 4 codespace codespace 4096 Jul  3 17:24 q2
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q3
+Observation: Standard output was redirected into a file for later inspection.
+
+Command 5: ls /not_a_real_path 2> q4/stderr.txt
+Output:
+ls: cannot access '/not_a_real_path': No such file or directory
+Observation: The error output from the failed command was captured separately.
+
+Command 6: (ls -l && ls /not_a_real_path) > q4/combined.txt 2>&1
+Output:
+total 24
+-rw-rw-rw-  1 codespace root         6 Jul  3 16:53 README.md
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q1
+drwxrwxrwx+ 4 codespace codespace 4096 Jul  3 17:24 q2
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q3
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q4
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q5
+ls: cannot access '/not_a_real_path': No such file or directory
+Observation: Both output streams were combined into a single file.
+
+Command 7: ulimit -a
+Output:
+real-time non-blocking time  (microseconds, -R) unlimited
+core file size              (blocks, -c) unlimited
+data seg size               (kbytes, -d) unlimited
+scheduling priority                 (-e) 0
+file size                   (blocks, -f) unlimited
+pending signals                     (-i) 31749
+max locked memory           (kbytes, -l) 8192
+max memory size             (kbytes, -m) unlimited
+open files                          (-n) 524288
+pipe size                (512 bytes, -p) 8
+POSIX message queues         (bytes, -q) 819200
+real-time priority                  (-r) 0
+stack size                  (kbytes, -s) 8192
+cpu time                   (seconds, -t) unlimited
+max user processes                  (-u) unlimited
+virtual memory              (kbytes, -v) unlimited
+file locks                          (-x) unlimited
+Observation: The shell resource limits show the maximum open files and other process constraints.

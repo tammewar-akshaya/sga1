@@ -1,0 +1,49 @@
+Question 2 - Secure Project Workspace Setup
+==========================================
+
+Directory structure created:
+q2/secure_workspace
+q2/secure_workspace/docs
+q2/secure_workspace/logs
+q2/secure_workspace/src
+Observation: The secure workspace has separate directories for docs, src, and logs.
+
+Permissions before modification:
+q2/secure_workspace 777 codespace:codespace
+q2/secure_workspace/docs 777 codespace:codespace
+q2/secure_workspace/src 777 codespace:codespace
+q2/secure_workspace/logs 777 codespace:codespace
+q2/secure_workspace/docs/plan.txt 666 codespace:codespace
+q2/secure_workspace/src/app.txt 666 codespace:codespace
+q2/secure_workspace/logs/activity.log 666 codespace:codespace
+Observation: The initial permissions were broad and allowed more access than necessary for sensitive project files.
+
+Commands executed:
+chmod 750 q2/secure_workspace
+chmod 750 q2/secure_workspace/docs q2/secure_workspace/src q2/secure_workspace/logs
+chmod 640 q2/secure_workspace/docs/plan.txt q2/secure_workspace/src/app.txt q2/secure_workspace/logs/activity.log
+Observation: These permission changes restricted access to the owner and limited group access.
+
+Permissions after modification:
+q2/secure_workspace 750 codespace:codespace
+q2/secure_workspace/docs 750 codespace:codespace
+q2/secure_workspace/src 750 codespace:codespace
+q2/secure_workspace/logs 750 codespace:codespace
+q2/secure_workspace/docs/plan.txt 640 codespace:codespace
+q2/secure_workspace/src/app.txt 640 codespace:codespace
+q2/secure_workspace/logs/activity.log 640 codespace:codespace
+Observation: The final permissions are tighter and better suited for a secure project workspace.
+
+Ownership details:
+q2/secure_workspace codespace:codespace
+q2/secure_workspace/docs codespace:codespace
+q2/secure_workspace/src codespace:codespace
+q2/secure_workspace/logs codespace:codespace
+q2/secure_workspace/docs/plan.txt codespace:codespace
+q2/secure_workspace/src/app.txt codespace:codespace
+q2/secure_workspace/logs/activity.log codespace:codespace
+Observation: All objects are owned by the current user, which keeps administration simple.
+
+Umask value used:
+0022
+Observation: The current umask value is 0022, which creates files with standard read/write permissions for the owner and read-only access for others.

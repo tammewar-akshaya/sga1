@@ -1,0 +1,8 @@
+total 24
+-rw-rw-rw-  1 codespace root         6 Jul  3 16:53 README.md
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q1
+drwxrwxrwx+ 4 codespace codespace 4096 Jul  3 17:24 q2
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q3
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q4
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 17:24 q5
+ls: cannot access '/not_a_real_path': No such file or directory
